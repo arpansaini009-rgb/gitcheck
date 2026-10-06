@@ -10,7 +10,8 @@ function seeded(seed) {
 }
 
 const rand = seeded(42);
-const DAYS = 90;
+// 180 days so the longest range (90d) still has a full previous period to compare against.
+const DAYS = 180;
 
 export const daily = Array.from({ length: DAYS }, (_, i) => {
   const date = new Date();
