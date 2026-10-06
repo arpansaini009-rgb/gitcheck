@@ -41,11 +41,12 @@ export const recentOrders = Array.from({ length: 8 }, (_, i) => {
   const date = new Date();
   date.setMinutes(date.getMinutes() - Math.round(rand() * 60 * 24) - i * 90);
   return {
-    id: `#${10420 - i}`,
     customer: CUSTOMERS[i],
     category: CATEGORIES[Math.floor(rand() * CATEGORIES.length)],
     amount: Math.round(40 + rand() * 460),
     status: STATUSES[Math.floor(rand() * STATUSES.length)],
     date,
   };
-});
+})
+  .sort((a, b) => b.date - a.date)
+  .map((order, i) => ({ id: `#${10420 - i}`, ...order }));

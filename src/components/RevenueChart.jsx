@@ -48,9 +48,9 @@ export default function RevenueChart({ data, colors }) {
             />
             <Tooltip content={<ChartTooltip />} cursor={{ stroke: colors.axis }} />
             <Line type="monotone" dataKey="revenue" name="Revenue" stroke={colors.series1} strokeWidth={2} dot={false}
-              activeDot={{ r: 4, stroke: colors.surface, strokeWidth: 2 }} />
+              activeDot={{ r: 4, stroke: colors.surface, strokeWidth: 2 }} isAnimationActive={false} />
             <Line type="monotone" dataKey="expenses" name="Expenses" stroke={colors.series2} strokeWidth={2} dot={false}
-              activeDot={{ r: 4, stroke: colors.surface, strokeWidth: 2 }} />
+              activeDot={{ r: 4, stroke: colors.surface, strokeWidth: 2 }} isAnimationActive={false} />
           </LineChart>
         </ResponsiveContainer>
       </div>
