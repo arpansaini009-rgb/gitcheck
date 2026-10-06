@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 
 // Chart colors are passed to Recharts as hex (SVG attributes don't reliably resolve CSS vars),
 // so each theme carries its own validated steps. Keep in sync with the tokens in index.css.
@@ -45,15 +45,19 @@ export function useTheme() {
     return () => darkQuery.removeEventListener('change', onChange);
   }, []);
 
-  useEffect(() => {
+  // Layout effect so the page never paints a frame in the wrong theme.
+  useLayoutEffect(() => {
     document.documentElement.dataset.theme = theme;
   }, [theme]);
 
   const toggle = () => {
     const next = theme === 'dark' ? 'light' : 'dark';
-    setOverride(next);
+    // Toggling back to the OS theme clears the override, so it follows the OS again.
+    const nextOverride = next === system ? null : next;
+    setOverride(nextOverride);
     try {
-      localStorage.setItem('theme', next);
+      if (nextOverride) localStorage.setItem('theme', nextOverride);
+      else localStorage.removeItem('theme');
     } catch {
       // storage unavailable; theme still applies for this session
     }

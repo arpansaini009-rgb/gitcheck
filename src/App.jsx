@@ -62,7 +62,7 @@ export default function App() {
         <StatTile label="Revenue" value={currency(curr.revenue)} delta={change(curr.revenue, prev.revenue)} />
         <StatTile label="Expenses" value={currency(curr.expenses)} delta={change(curr.expenses, prev.expenses)} invert />
         <StatTile label="Orders" value={number(curr.orders)} delta={change(curr.orders, prev.orders)} />
-        <StatTile label="Conversion" value={percent(curr.conversion)} delta={curr.conversion - prev.conversion} unit="pp" />
+        <StatTile label="Conversion" value={percent(curr.conversion)} delta={prev.visitors ? curr.conversion - prev.conversion : null} unit="pp" />
       </section>
 
       <section className="grid">
