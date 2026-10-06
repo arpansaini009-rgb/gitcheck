@@ -19,10 +19,11 @@ function totals(rows) {
     }),
     { revenue: 0, expenses: 0, orders: 0, visitors: 0 }
   );
-  return { ...t, conversion: t.orders / t.visitors };
+  return { ...t, conversion: t.visitors ? t.orders / t.visitors : 0 };
 }
 
-const change = (curr, prev) => (curr - prev) / prev;
+// Relative change; null when there is no previous value to compare against.
+const change = (curr, prev) => (prev ? (curr - prev) / prev : null);
 
 export default function App() {
   const [range, setRange] = useState(30);
@@ -61,7 +62,7 @@ export default function App() {
         <StatTile label="Revenue" value={currency(curr.revenue)} delta={change(curr.revenue, prev.revenue)} />
         <StatTile label="Expenses" value={currency(curr.expenses)} delta={change(curr.expenses, prev.expenses)} invert />
         <StatTile label="Orders" value={number(curr.orders)} delta={change(curr.orders, prev.orders)} />
-        <StatTile label="Conversion" value={percent(curr.conversion)} delta={change(curr.conversion, prev.conversion)} />
+        <StatTile label="Conversion" value={percent(curr.conversion)} delta={curr.conversion - prev.conversion} unit="pp" />
       </section>
 
       <section className="grid">

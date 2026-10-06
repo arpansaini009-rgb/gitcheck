@@ -8,7 +8,7 @@ function ChartTooltip({ active, payload }) {
       <div className="tooltip-title">{shortDate(payload[0].payload.date)}</div>
       {payload.map((p) => (
         <div key={p.dataKey} className="tooltip-row">
-          <span className="swatch" style={{ background: p.stroke }} />
+          <span className="swatch" style={{ background: p.color }} />
           <span>{p.name}</span>
           <strong>{currency(p.value)}</strong>
         </div>
