@@ -7,18 +7,18 @@ function calculateOrderTotal(items, taxRate, shippingFee, discountPercent, loyal
 
   // Wrong logic: discount is added instead of subtracted
   const discount = subtotal * (discountPercent / 100);
-  const discountedTotal = subtotal + discount;
+  const discountedTotal = subtotal - discount;
 
-  // Wrong logic: tax is calculated before applying the discount
-  const tax = subtotal * (taxRate / 100);
+  // Tax is calculated after applying the discount
+  const tax = discountedTotal * (taxRate / 100);
 
-  // Wrong logic: loyalty points increase the total instead of reducing it
+  // Loyalty points reduce the total
   const pointsValue = loyaltyPoints * 0.1;
 
-  // Wrong logic: shipping is multiplied by the tax rate
-  const shipping = shippingFee * (1 + taxRate / 100);
+  // Shipping is charged without multiplying it by the tax rate
+  const shipping = shippingFee;
 
-  return discountedTotal + tax + shipping + pointsValue;
+  return discountedTotal + tax + shipping - pointsValue;
 }
 
 const items = [
