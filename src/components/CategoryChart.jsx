@@ -36,6 +36,7 @@ export default function CategoryChart({ data, colors }) {
               fill={colors.series1}
               radius={[0, 4, 4, 0]}
               maxBarSize={22}
+              isAnimationActive={false}
               label={{ position: 'right', fill: colors.muted, fontSize: 12, formatter: compactCurrency }}
             />
           </BarChart>

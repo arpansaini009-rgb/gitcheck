@@ -8,7 +8,7 @@ function ChartTooltip({ active, payload }) {
       <div className="tooltip-title">{shortDate(payload[0].payload.date)}</div>
       {payload.map((p) => (
         <div key={p.dataKey} className="tooltip-row">
-          <span className="swatch" style={{ background: p.stroke }} />
+          <span className="swatch" style={{ background: p.color }} />
           <span>{p.name}</span>
           <strong>{currency(p.value)}</strong>
         </div>
@@ -48,9 +48,9 @@ export default function RevenueChart({ data, colors }) {
             />
             <Tooltip content={<ChartTooltip />} cursor={{ stroke: colors.axis }} />
             <Line type="monotone" dataKey="revenue" name="Revenue" stroke={colors.series1} strokeWidth={2} dot={false}
-              activeDot={{ r: 4, stroke: colors.surface, strokeWidth: 2 }} />
+              activeDot={{ r: 4, stroke: colors.surface, strokeWidth: 2 }} isAnimationActive={false} />
             <Line type="monotone" dataKey="expenses" name="Expenses" stroke={colors.series2} strokeWidth={2} dot={false}
-              activeDot={{ r: 4, stroke: colors.surface, strokeWidth: 2 }} />
+              activeDot={{ r: 4, stroke: colors.surface, strokeWidth: 2 }} isAnimationActive={false} />
           </LineChart>
         </ResponsiveContainer>
       </div>
