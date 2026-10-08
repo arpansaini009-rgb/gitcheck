@@ -1,6 +1,6 @@
 const POINT_VALUE = 0.1;
 
-function calculateOrderTotal(items, taxRate, shippingFee, discountPercent, loyaltyPoints) {
+export default function calculateOrderTotal(items, taxRate, shippingFee, discountPercent, loyaltyPoints) {
   let subtotal = 0;
 
   for (const item of items) {
