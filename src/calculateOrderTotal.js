@@ -1,3 +1,5 @@
+const POINT_VALUE = 0.1;
+
 function calculateOrderTotal(items, taxRate, shippingFee, discountPercent, loyaltyPoints) {
   let subtotal = 0;
 
@@ -5,20 +7,21 @@ function calculateOrderTotal(items, taxRate, shippingFee, discountPercent, loyal
     subtotal += item.price * item.quantity;
   }
 
-  // Wrong logic: discount is added instead of subtracted
+  // Discount reduces the subtotal.
   const discount = subtotal * (discountPercent / 100);
-  const discountedTotal = subtotal + discount;
+  const discountedTotal = subtotal - discount;
 
-  // Wrong logic: tax is calculated before applying the discount
-  const tax = subtotal * (taxRate / 100);
+  // Tax applies to the discounted amount.
+  const tax = discountedTotal * (taxRate / 100);
 
-  // Wrong logic: loyalty points increase the total instead of reducing it
-  const pointsValue = loyaltyPoints * 0.1;
+  // Shipping is a flat fee and is not taxed.
+  const shipping = shippingFee;
 
-  // Wrong logic: shipping is multiplied by the tax rate
-  const shipping = shippingFee * (1 + taxRate / 100);
+  // Loyalty points are redeemed against the total, but can't push it below zero.
+  const beforePoints = discountedTotal + tax + shipping;
+  const pointsValue = Math.min(loyaltyPoints * POINT_VALUE, beforePoints);
 
-  return discountedTotal + tax + shipping + pointsValue;
+  return beforePoints - pointsValue;
 }
 
 const items = [
