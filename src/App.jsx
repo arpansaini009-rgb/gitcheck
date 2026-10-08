@@ -6,6 +6,8 @@ import StatTile from './components/StatTile.jsx';
 import RevenueChart from './components/RevenueChart.jsx';
 import CategoryChart from './components/CategoryChart.jsx';
 import OrdersTable from './components/OrdersTable.jsx';
+import Header from './components/Header.jsx';
+import Footer from './components/Footer.jsx';
 
 const RANGES = [7, 30, 90];
 
@@ -19,10 +21,11 @@ function totals(rows) {
     }),
     { revenue: 0, expenses: 0, orders: 0, visitors: 0 }
   );
-  return { ...t, conversion: t.orders / t.visitors };
+  return { ...t, conversion: t.visitors ? t.orders / t.visitors : 0 };
 }
 
-const change = (curr, prev) => (curr - prev) / prev;
+// Relative change; null when there is no previous value to compare against.
+const change = (curr, prev) => (prev ? (curr - prev) / prev : null);
 
 export default function App() {
   const [range, setRange] = useState(30);
@@ -40,36 +43,42 @@ export default function App() {
   }, [range]);
 
   return (
-    <div className="page">
-      <header className="topbar">
-        <h1>Dashboard</h1>
-        <div className="controls">
-          <div className="segmented" role="group" aria-label="Date range">
-            {RANGES.map((r) => (
-              <button key={r} className={r === range ? 'active' : ''} aria-pressed={r === range} onClick={() => setRange(r)}>
-                {r}d
-              </button>
-            ))}
+    <>
+      <Header />
+      <main className="page" id="overview">
+        <div className="topbar">
+          <h1>Dashboard</h1>
+          <div className="controls">
+            <div className="segmented" role="group" aria-label="Date range">
+              {RANGES.map((r) => (
+                <button key={r} className={r === range ? 'active' : ''} aria-pressed={r === range} onClick={() => setRange(r)}>
+                  {r}d
+                </button>
+              ))}
+            </div>
+            <button className="icon-btn" onClick={toggle} aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}>
+              {theme === 'dark' ? '☀' : '☾'}
+            </button>
           </div>
-          <button className="icon-btn" onClick={toggle} aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}>
-            {theme === 'dark' ? '☀' : '☾'}
-          </button>
         </div>
-      </header>
 
-      <section className="stats">
-        <StatTile label="Revenue" value={currency(curr.revenue)} delta={change(curr.revenue, prev.revenue)} />
-        <StatTile label="Expenses" value={currency(curr.expenses)} delta={change(curr.expenses, prev.expenses)} invert />
-        <StatTile label="Orders" value={number(curr.orders)} delta={change(curr.orders, prev.orders)} />
-        <StatTile label="Conversion" value={percent(curr.conversion)} delta={change(curr.conversion, prev.conversion)} />
-      </section>
+        <section className="stats">
+          <StatTile label="Revenue" value={currency(curr.revenue)} delta={change(curr.revenue, prev.revenue)} />
+          <StatTile label="Expenses" value={currency(curr.expenses)} delta={change(curr.expenses, prev.expenses)} invert />
+          <StatTile label="Orders" value={number(curr.orders)} delta={change(curr.orders, prev.orders)} />
+          <StatTile label="Conversion" value={percent(curr.conversion)} delta={prev.visitors ? curr.conversion - prev.conversion : null} unit="pp" />
+        </section>
 
-      <section className="grid">
-        <RevenueChart data={current} colors={colors} />
-        <CategoryChart data={categories} colors={colors} />
-      </section>
+        <section className="grid" id="charts">
+          <RevenueChart data={current} colors={colors} />
+          <CategoryChart data={categories} colors={colors} />
+        </section>
 
-      <OrdersTable orders={recentOrders} />
-    </div>
+        <section id="orders">
+          <OrdersTable orders={recentOrders} />
+        </section>
+      </main>
+      <Footer />
+    </>
   );
 }
