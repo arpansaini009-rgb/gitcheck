@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
-// Minimal hash routing: "#contact" is its own page; any other hash is a section of the dashboard.
-const PAGES = ['contact'];
+// Minimal hash routing: each entry in PAGES is its own page; any other hash is a section of the dashboard.
+const PAGES = ['gallery', 'contact'];
 
 const routeFromHash = () => {
   const id = window.location.hash.slice(1);

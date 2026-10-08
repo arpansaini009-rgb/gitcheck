@@ -2,6 +2,7 @@ const LINKS = [
   { href: '#overview', label: 'Overview' },
   { href: '#charts', label: 'Charts' },
   { href: '#orders', label: 'Orders' },
+  { href: '#gallery', label: 'Gallery', route: 'gallery' },
   { href: '#contact', label: 'Contact', route: 'contact' },
 ];
 
